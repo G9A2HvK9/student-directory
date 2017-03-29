@@ -28,11 +28,11 @@ def print_names(students)
   letter = gets.upcase.chomp
   if letter == "ALL"
     students.each_with_index do |student, index|
-      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length < 12
     end
   else
     students.each_with_index do |student, index|
-      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].start_with?(letter)
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].start_with?(letter) && student[:name].length < 12
     end
   end
 end
