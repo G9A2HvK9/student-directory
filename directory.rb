@@ -23,8 +23,17 @@ def print_header
 end
 
 def print_names(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  puts "Would you like to look for students beginning with a specific letter?"
+  puts "To see all students, just type \"ALL\""
+  letter = gets.upcase.chomp
+  if letter == "ALL"
+    students.each_with_index do |student, index|
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  else
+    students.each_with_index do |student, index|
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].start_with?(letter)
+    end
   end
 end
 
