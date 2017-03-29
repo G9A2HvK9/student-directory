@@ -26,7 +26,7 @@ def print_names(students)
   puts "Would you like to look for students beginning with a specific letter?"
   puts "To see all students, just type \"ALL\""
   letter = gets.upcase.chomp
-  if letter == "ALL"
+    if letter == "ALL"
     students.each_with_index do |student, index|
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length < 12
     end
