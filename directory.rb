@@ -1,3 +1,30 @@
+# menu to prompt for options from user
+def interactive_menu
+  loop do
+  #1. Print menu and ask user what to do
+  puts "1. Register new students"
+  puts "2. Display a list of students"
+  puts "9. Exit"
+
+  #2. Read the input and save it into a variable
+  selection = gets.chomp
+
+  #3. Do what the user has asked
+  case selection
+    when "1"
+      students = input_students
+    when "2"
+      print_header
+      print_names(students)
+      print_footer(students)
+    when "9"
+      exit
+    else
+      puts "Please enter valid intput 1 through 9"
+    end
+  #4. Repeat from step 1
+end
+
 # Getting input from user regarding student information.
 def input_students
   puts "\n"
@@ -30,15 +57,6 @@ def input_students
         print "Nationality:\t"
         nationality = gets.capitalize.chomp # capitalizes the first letter of the string for standardization in later use
       end
-    # get age
-    print "Age:\t\t"
-    age = gets
-      # tests if the user inputs numbers or not. If it is a string, the user is prompted to input a number for age.
-      until !age.empty? do
-        puts "Please enter a valid NUMBER as age."
-        print "Age:\t\t"
-        age = gets # converts input to an integer for easier later use
-      end
     # get cohort
     print "Cohort:\t\t"
     cohort = gets.capitalize.chomp
@@ -49,7 +67,7 @@ def input_students
         cohort = gets.capitalize.chomp # capitalizes the first letter of the string for standardization in later use
       end
     # add student hash to the array
-    students << {first_name: first_name, last_name: last_name, nationality: nationality, age: age, cohort: cohort} unless first_name.empty?
+    students << {first_name: first_name, last_name: last_name, nationality: nationality, cohort: cohort} unless first_name.empty?
       # if statement to display the number of students currently registered. Depending on number, the message changes.
       puts "\n"
       if students.count < 1
