@@ -75,25 +75,31 @@ def print_header
 end
 
 def print_names(students)
+  cohorts = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "All"]
   puts "\n"
   puts "STUDENT LOOK-UP".center(75, "-")
-  puts "To look up students by first name, simply type the letter you are looking for.".center(75)
-  puts "To see all students, just type \"ALL\"".center(75)
+  puts "To look up students in a particular cohort, please type the cohort you would like to display.".center(75)
+  puts "To see all students, just type \"All\"".center(75)
+  puts "\n"
   print "Look up:\t"
-  letter = gets.upcase.chomp
-    if letter == "ALL"
-    students.each_with_index do |student, index|
+  cohort = gets.capitalize.chomp
+    until cohorts.include?(cohort) do
+      puts "This is not a valid input. Please enter the cohort you would like to display. To see all students, type \"All\""
       puts "\n"
-      puts "#{index + 1}. #{student[:first_name]} (#{student[:cohort]} cohort)" if student[:first_name].length < 12
+      print "Look up:\t"
+      cohort = gets.capitalize.chomp
     end
-  else
-    i = 0
-    until i == students.count
+    if cohort == "All"
+      i = 0
       puts "\n"
-      puts "#{i + 1}. #{students[i][:first_name]} (#{students[i][:cohort]} cohort)" if students[i][:first_name].start_with?(letter) && students[i][:first_name].length < 12
-      i += 1
+      students.map{|student| puts "#{i += 1}. #{student[:first_name]} #{student[:last_name]}\t#{student[:cohort]}"}
+    elsif cohort != "All" && cohorts.include?(cohort)
+      i = 0
+      puts "\n"
+      students.map{|student| puts "#{i += 1}. #{student[:first_name]} #{student[:last_name]}\t#{student[:cohort]}"} if students.map{|student| student[:cohort] = cohort}
+    else
+      puts "Sorry, there are currently no students registered in the #{cohort} cohort."
     end
-  end
 end
 
 def print_footer(students)
