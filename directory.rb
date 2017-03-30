@@ -1,3 +1,4 @@
+# Getting input from user regarding student information.
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
@@ -6,38 +7,47 @@ def input_students
   # get the first name
   print "First Name: "
   first_name = gets.capitalize.chomp
-  # while the name is not empty, repeat this code
+  # while the first_name is not empty, repeat this code
   while !first_name.empty? do
-    puts "Please add a bit more information about #{first_name}."
+    #prompts for more info on student from user
+    puts "Let's get some more info on #{first_name}!"
+    # get last name
     print "Last name: "
-    last_name = gets.capitalize.chomp
+    last_name = gets.capitalize.chomp #capitalizes the first letter of the string for standardization in later use
+      # If last_name is left blank this sequence runs to request valid input.
       if last_name.empty?
         puts "Please enter a valid last name."
         print "Last Name: "
-        last_name = gets.capitalize.chomp
+        last_name = gets.capitalize.chomp # capitalizes the first letter of the string for standardization in later use
       end
+    # get nationality
     print "Nationality: "
     nationality = gets.capitalize.chomp
+      # If nationality is left blank this sequence runs to request valid input.
       if nationality.empty?
         puts "Please enter a valid Nationality."
         print "Nationality: "
-        nationality = gets.capitalize.chomp
+        nationality = gets.capitalize.chomp # capitalizes the first letter of the string for standardization in later use
       end
+    # get age
     print "Age: "
     age = gets
+      # tests if the user inputs numbers or not. If it is a string, the user is prompted to input a number for age.
       if age.is_a? String
         puts "Please enter a valid NUMBER as age."
         print "Age: "
-        age = gets.to_i
+        age = gets.to_i # converts input to an integer for easier later use
       elsif !age.is_a? String
-        age = age.to_i
+        age = age.to_i # converts input to integer for easier later use
       end
+    # get cohort
     print "Cohort: "
     cohort = gets.capitalize.chomp
+      # if the cohort is not a valid month of the year, the user is asked to provide correct input. There must be a more elegant solution using arrays.
       if cohort != ("January" || "February" || "March" || "April" || "May" || "June" || "July" || "August" || "September" || "October" || "November" || "December")
         puts "Please enter a VALID MONTH as #{first_name}\'s cohort"
         print "Cohort: "
-        cohort = gets.capitalize.chomp
+        cohort = gets.capitalize.chomp # capitalizes the first letter of the string for standardization in later use
       end
     # add student hash to the array
     students << {first_name: first_name, last_name: last_name, nationality: nationality, age: age, cohort: cohort} unless first_name.empty?
