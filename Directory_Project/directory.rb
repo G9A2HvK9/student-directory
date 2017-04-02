@@ -15,8 +15,9 @@ def menu_header # Header for the general student directory
   puts "-".center(100,"-")
 end
 def menu_print # Prints the Menu to the console
-  puts "1. Register new Students"
+  puts "1. Register new Student"
   puts "2. Display list of students"
+  puts "3. Save all students to CSV file"
   puts "9. Exit"
 end
 def menu_prompt # Prompts for user input and stores it in the global variable menu_selection
@@ -28,7 +29,9 @@ def menu_selection(menu_selection) # Takes next step after menu_selection (inclu
     when "1"
       registration_main
     when "2"
-      show_students
+      display
+    when "3"
+      save_to_file
     when "9"
       exit
     else
@@ -66,19 +69,19 @@ def registration_main # Defines the whole registration process, based on sib met
 end
 def registration_header # Header for the student registration process
   puts "-".center(100,"-")
-  puts " REGISTERING NEW STUDENTS ".center(100,"-")
+  puts " REGISTERING NEW STUDENT ".center(100,"-")
   puts "-".center(100,"-")
 end
 def registration_prompt # Prompts for user input for student registration and gives explanation for use
-  puts "You are registering new students. Please follow all instructions.".center(100)
-  puts "To abort at any time, simply type \"EXIT\" into any field to return to the main menu.".center(100)
+  puts "You are registering a new student. Please follow all instructions.".center(100)
+  puts "To abort at any time, simply type \"Exit\" into any field to return to the main menu.".center(100)
 end
-def registration_first_name # Method to register the first name, including EXIT rescue and empty input rescue
+def registration_first_name # Method to register the first name, including Exit rescue and empty input rescue
   print "First Name:\t"
   @first_name = gets.chomp.capitalize.to_s
   loop do
     case
-      when @first_name == "EXIT"
+      when @first_name == "Exit"
         registration_rescue_exit
       when @first_name.empty?
         registration_rescue_error
@@ -91,12 +94,12 @@ def registration_first_name # Method to register the first name, including EXIT 
     end
   end
 end
-def registration_last_name # Method to register the last name, including EXIT rescue and empty input rescue
+def registration_last_name # Method to register the last name, including Exit rescue and empty input rescue
   print "Last Name:\t"
   @last_name = gets.chomp.capitalize.to_s
   loop do
     case
-      when @last_name == "EXIT"
+      when @last_name == "Exit"
         registration_rescue_exit
       when @last_name.empty?
         registration_rescue_error
@@ -109,13 +112,13 @@ def registration_last_name # Method to register the last name, including EXIT re
     end
   end
 end
-def registration_nationality # Method to register the nationality, including EXIT rescue and empty input rescue
+def registration_nationality # Method to register the nationality, including Exit rescue and empty input rescue
   @valid_nationalities
   print "Nationality:\t"
   @nationality = gets.chomp.capitalize.to_s
   loop do
     case
-      when @nationality == "EXIT"
+      when @nationality == "Exit"
         registration_rescue_exit
       when @nationality.empty?
         registration_rescue_error
@@ -135,12 +138,12 @@ def registration_nationality # Method to register the nationality, including EXI
     end
   end
 end
-def registration_cohort # Method to register the last name, including EXIT rescue and empty input rescue
+def registration_cohort # Method to register the last name, including Exit rescue and empty input rescue
   print "Cohort:\t\t"
   @cohort = gets.chomp.capitalize.to_s
   loop do
     case
-      when @cohort == "EXIT"
+      when @cohort == "Exit"
         registration_rescue_exit
       when @cohort.empty?
         registration_rescue_error
@@ -209,7 +212,7 @@ def registration_footer
       puts "          What would you like to do next?          ".center(100,"-")
     else
       puts "We are experiencing difficulties determining the number of students at Hendrik's Academy".center(100,"-")
-      puts "          Please type \"EXIT\" to return to main menu          ".center(100,"-")
+      puts "          Please type \"Exit\" to return to main menu          ".center(100,"-")
     end
   end
 def registration_next_menu
@@ -218,16 +221,43 @@ def registration_next_menu
   @registration_selection = gets.chomp
 end
 def registration_next_selection # Takes next step after menu_selection (including rescue)
-  case @registration_selection
-    when "1"
-      registration_main
-    when "2"
-      show_students
-    when "3"
-      menu_main
-    else
-      puts "Please enter valid intput 1, 2 or 3"
+  loop do
+    case @registration_selection
+      when "1"
+        registration_main
+        break
+      when "2"
+        display
+        break
+      when "3"
+        menu_main
+        break
+      else
+        puts "Please enter valid intput 1, 2 or 3"
+        print "Input: "
+        @registration_selection = gets.chomp
+      end
+    end
+end
+
+# Display methods
+@all_students
+def display
+  puts "All students"
+  @all_students.each do |student|
+    puts "#{student[:first_name]} #{student[:last_name]}, #{student[:nationality]}"
   end
+end
+
+# save to file methods
+def save_to_file
+  file = File.open("students.csv", "w")
+  @all_students.each do |student|
+    student_data = [student[:first_name], student[:last_name], student[:nationality], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
 end
 
 
@@ -239,7 +269,7 @@ def registration_rescue_exit
   puts "You are returning to the main menu".center(100)
   puts "\n"
   menu_main
-end # when input = "EXIT" this method is called to return to main menu
+end # when input = "Exit" this method is called to return to main menu
 def registration_rescue_error # posts the initial error message for registration errors.
   puts "\n"
   puts "REGISTRATION ERROR".center(100,"*")
@@ -268,6 +298,3 @@ end
 
 # Runs the Menu
 menu_main
-
-# Student Registration
-registration_main
