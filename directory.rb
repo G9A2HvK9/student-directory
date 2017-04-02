@@ -18,6 +18,7 @@ def menu_print # Prints the Menu to the console
   puts "1. Register new Student"
   puts "2. Display list of students"
   puts "3. Save all students to CSV file"
+  puts "4. Load list from CSV file"
   puts "9. Exit"
 end
 def menu_prompt # Prompts for user input and stores it in the global variable menu_selection
@@ -32,6 +33,8 @@ def menu_selection(menu_selection) # Takes next step after menu_selection (inclu
       display
     when "3"
       save_to_file
+    when "4"
+      load_from_file
     when "9"
       exit
     else
@@ -240,29 +243,6 @@ def registration_next_selection # Takes next step after menu_selection (includin
     end
 end
 
-# Display methods
-@all_students
-def display
-  puts "All students"
-  @all_students.each do |student|
-    puts "#{student[:first_name]} #{student[:last_name]}, #{student[:nationality]}"
-  end
-end
-
-# save to file methods
-def save_to_file
-  file = File.open("students.csv", "w")
-  @all_students.each do |student|
-    student_data = [student[:first_name], student[:last_name], student[:nationality], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
-end
-
-
-
-
 # Registration Rescues
 def registration_rescue_exit
   puts "\n"
@@ -295,6 +275,38 @@ end
   "Slovenian", "Solomon Islander", "Somali", "South African", "South Korean", "Spanish", "Sri Lankan", "Sudanese", "Surinamer", "Swazi",
   "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian", "Tobagonian", "Tunisian",
   "Turkish", "Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Uzbek", "Venezuelan", "Vietnamese", "Welsh", "Yemenite", "Zambian", "Zimbabwean"]
+
+# Display methods
+  @all_students
+  def display
+    puts "All students"
+    @all_students.each do |student|
+      puts "#{student[:first_name]} #{student[:last_name]}, #{student[:nationality]}"
+    end
+  end
+
+# save to file methods
+  def save_to_file
+    file = File.open("students.csv", "w")
+    @all_students.each do |student|
+      student_data = [student[:first_name], student[:last_name], student[:nationality], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
+    file.close
+  end
+
+# Load from file methods
+def load_from_file
+  file = File.open("students.csv","r")
+  file.readlines.each do |line|
+    first_name, last_name, nationality, cohort = line.chomp.split(",")
+    @all_students << {first_name: first_name, last_name: last_name, nationality: nationality, cohort: cohort}
+  end
+  puts "TEST #{@all_students}"
+  file.close
+end
+
 
 # Runs the Menu
 menu_main
